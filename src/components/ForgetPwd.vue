@@ -13,6 +13,7 @@
           <el-form-item prop="username">
             <!-- 将用户名的输入框设置为只读 -->
             <el-input
+              disabled
               prefix-icon="el-icon-user"
               v-model="loginFormData.username"
               class="input-first"
