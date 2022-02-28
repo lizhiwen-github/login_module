@@ -7,7 +7,7 @@
       </div>
       <div class="login-form">
         <!-- 登录文字 -->
-         <h3 style="color:red">登录</h3>
+         <h3 style="color:red">注册</h3>
         <!-- 表单区域 -->
         <el-form ref="loginRef" :model="loginFormData" label-width="200" :rules="loginRules">
           <el-form-item prop="username">
@@ -26,16 +26,24 @@
              v-model="loginFormData.password">
             </el-input>
           </el-form-item>
-          <!-- 记住密码的单选框 -->
-          <el-form-item class="remePwd-checkBox">
-             <el-checkbox v-model="remPwd">记住密码</el-checkbox>
+          <!-- 验证码 -->
+          <el-form-item prop="verificationCode">
+             <el-input
+             placeholder="请输入验证码"
+              prefix-icon="el-icon-key"
+              v-model="loginFormData.verificationCode"
+              class="code-input"
+              >
+             </el-input>
+             <img src="../assets/a.jpg" alt="验证码">
+             <a href="#" id="code-link" style="marginLeft:10px">看不清</a>
           </el-form-item>
           <el-form-item>
-            <el-button type="success" @click="loginFun">登录</el-button>
+            <el-button type="success" @click="loginFun">注册</el-button>
             <el-button type="danger" class="reset-btn" @click="resetFun">重置</el-button>
           </el-form-item>
         </el-form>
-        <router-link to="/register" class="routerLinnk-first">注册</router-link>
+        <router-link to="/login" class="routerLinnk-first">登录</router-link>
         <router-link to="/forgetPwd" class="routerLinnk-second">忘记密码</router-link>
       </div>
     </div>
@@ -44,7 +52,7 @@
 
 <script>
 export default {
-  name: 'Logn',
+  name: 'Register',
   data () {
     return {
       //* 表单组件的数据模型
@@ -52,7 +60,9 @@ export default {
         // - 用户名
         username: '',
         // - 密码
-        password: ''
+        password: '',
+        // - 验证码
+        verificationCode: ''
       },
       // - 表单的验证规则
       loginRules: {
@@ -63,6 +73,9 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 5, max: 15, message: '长度在 5 到 15 个字符', trigger: 'blur' }
+        ],
+        verificationCode: [
+          { required: true, message: '请输入验证码', trigger: 'blur' }
         ]
       },
       // - 记住密码的单选框的选中状态
@@ -163,7 +176,7 @@ export default {
   margin-left: 130px !important;
 }
 .input-first{
-  margin-bottom: 16px;
+  // margin-bottom: 16px;
   margin-top: 30px;
 }
 .routerLinnk-first{
@@ -173,8 +186,13 @@ export default {
 .routerLinnk-second{
   text-decoration: none;
 }
-.remePwd-checkBox{
-  text-align: left;
-
+.code-input{
+  width: 60%;
+  position: relative;
+  top: -20px;
+  left: -20px;
+}
+.code-link{
+  height: 50px;
 }
 </style>

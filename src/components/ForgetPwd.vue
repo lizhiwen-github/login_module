@@ -7,12 +7,12 @@
       </div>
       <div class="login-form">
         <!-- 登录文字 -->
-         <h3 style="color:red">登录</h3>
+         <h3 style="color:red">忘记密码</h3>
         <!-- 表单区域 -->
         <el-form ref="loginRef" :model="loginFormData" label-width="200" :rules="loginRules">
           <el-form-item prop="username">
+            <!-- 将用户名的输入框设置为只读 -->
             <el-input
-             placeholder="请输入用户名"
               prefix-icon="el-icon-user"
               v-model="loginFormData.username"
               class="input-first"
@@ -26,17 +26,24 @@
              v-model="loginFormData.password">
             </el-input>
           </el-form-item>
+          <el-form-item prop="rePassword">
+            <el-input
+            placeholder="请再次输入密码"
+            prefix-icon="el-icon-lock"
+             v-model="loginFormData.rePassword">
+            </el-input>
+          </el-form-item>
           <!-- 记住密码的单选框 -->
           <el-form-item class="remePwd-checkBox">
              <el-checkbox v-model="remPwd">记住密码</el-checkbox>
           </el-form-item>
           <el-form-item>
-            <el-button type="success" @click="loginFun">登录</el-button>
+            <el-button type="success" @click="loginFun">确定</el-button>
             <el-button type="danger" class="reset-btn" @click="resetFun">重置</el-button>
           </el-form-item>
         </el-form>
-        <router-link to="/register" class="routerLinnk-first">注册</router-link>
-        <router-link to="/forgetPwd" class="routerLinnk-second">忘记密码</router-link>
+        <!-- <router-link to="/register" class="routerLinnk-first">注册</router-link>
+        <router-link to="/forgetPwd" class="routerLinnk-second">忘记密码</router-link> -->
       </div>
     </div>
   </div>
@@ -44,25 +51,35 @@
 
 <script>
 export default {
-  name: 'Logn',
+  name: 'ForgetPwd',
   data () {
+    const checkPwd = (rule, value, cb) => {
+      if (value !== this.loginFormData.password) {
+        cb(new Error('两次密码输入不一致'))
+      } else if (!value) {
+        cb(new Error('请再次输入密码'))
+      } else {
+        cb()
+      }
+    }
     return {
       //* 表单组件的数据模型
       loginFormData: {
         // - 用户名
         username: '',
         // - 密码
-        password: ''
+        password: '',
+        // - 再次输入密码
+        rePassword: ''
       },
       // - 表单的验证规则
       loginRules: {
-        username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
-        ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 5, max: 15, message: '长度在 5 到 15 个字符', trigger: 'blur' }
+        ],
+        rePassword: [
+          { validator: checkPwd, trigger: 'blur' }
         ]
       },
       // - 记住密码的单选框的选中状态
@@ -163,18 +180,9 @@ export default {
   margin-left: 130px !important;
 }
 .input-first{
-  margin-bottom: 16px;
   margin-top: 30px;
-}
-.routerLinnk-first{
-  margin-right: 20px;
-  text-decoration: none;
-}
-.routerLinnk-second{
-  text-decoration: none;
 }
 .remePwd-checkBox{
   text-align: left;
-
 }
 </style>
